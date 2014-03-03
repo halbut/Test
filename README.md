@@ -30,3 +30,11 @@ enough to optimize even that primitive code.
 
 Please feel free to play around and let me know if you can 
 get to make it work faster.
+
+Update: It turns out one of the major problems was using List instead of an Array.
+The code was updated to use Arrays everywhere and the new numbers are:
+
+Java Runtime: 55sec 
+Scala Runtime: 2min 33sec = 153sec
+
+So that is about a 3x speed up, now.

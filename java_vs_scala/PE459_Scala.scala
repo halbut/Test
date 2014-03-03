@@ -3,9 +3,9 @@
 // date;java -Xms4g -Xmx12g -cp scala-library.jar:. PE459_Scala;date
 //
 // Result:
-// Start:   Fri Feb 28 00:17:35 PST 2014
-// End:     Fri Feb 28 04:24:40 PST 2014
-// Runtime: 4hr 7min 5sec = 247min 5sec = 14825sec
+// Start:   Mon Mar  3 13:20:12 PST 2014
+// End:     Mon Mar  3 13:22:45 PST 2014
+// Runtime: 2min 33sec = 153sec
 
 
 import scala.util.control.Breaks._
@@ -30,11 +30,11 @@ object PE459_Scala {
       }
     }
  
-    Array(W.reverse,H.reverse)
+    Array(W.reverse.toArray,H.reverse.toArray)
   }
 
 
-  def row(limit:Int,V:List[Int]) = {
+  def row(limit:Int,V:Array[Int]) = {
 
     var R:Array[Int] = Array.fill(limit)(0)
     R(0) = 1
@@ -61,7 +61,7 @@ object PE459_Scala {
           cache(k) = tmp_num
         }
       }
-      var r = mex(mexList)
+      var r = mex(mexList.toArray)
       if (debug) println("nim_mult_str="+mexList+"  R("+i+") = "+r)
       R(i) = r
       last = cache
@@ -71,7 +71,7 @@ object PE459_Scala {
 
    def nim_sum(a:Int, b:Int) = a^b // Computes binary XOR
 
-   def mex(input:List[Int]) = {
+   def mex(input:Array[Int]) = {
       // This function takes an input list of numbers and returns the mex value of those numbers
       // That is, the function returns the minimal exluded value (the smallest number, from 0, not in the list)
       // e.g. mex(List(0, 1, 3)) = 2   while   mex(List(0, 1, 2)) = 3 and mex(List(1, 2, 3)) = 0
@@ -79,9 +79,9 @@ object PE459_Scala {
       // use the array like a hash
       var numArr = new Array[Int](input.length)
 
-      for (i <- 0 to input.length-1) {
-        if (input(i) < input.length)  // no need to store large numbers
-          numArr(input(i)) = 1
+      for (i <- input) {
+        if (i < input.length)  // no need to store large numbers
+          numArr(i) = 1
       }
 
       // Define n to be the largest number in our array
@@ -123,7 +123,7 @@ object PE459_Scala {
    }
 
     // Fermat two-powers (2^(2^n))
-    var ftp:List[Long] = List(2L, 4L, 16L, 256L, 65536L, 4294967296L)
+    var ftp:Array[Long] = Array(2L, 4L, 16L, 256L, 65536L, 4294967296L)
 
    def nim_mult_fast(n1:Long,n2:Long):Long = {
       var a:Long = n1
@@ -163,15 +163,15 @@ object PE459_Scala {
         return nim_mult((ftpp*3)/2, nim_mult(a/ftpp, b/ftpp));
     }
 
-   def getRanges(S:List[Int], V:Array[Int]):Array[Long] = {
+   def getRanges(S:Array[Int], V:Array[Int]):Array[Long] = {
       var nRanges:Array[Long] =  Array.fill(V.length+1)(0)
       var ranges:Array[Long] =  Array.fill(V.length+1)(0)
       ranges(0) = 0;
       for (n <- 1 to V.length) {
          ranges(n) = ranges(n-1)^V(n-1)
          for (s <- S) {
-               if (s<=n)
-	         nRanges((ranges(n)^ranges(n-s)).toInt) += 1
+            if (s<=n)
+	       nRanges((ranges(n)^ranges(n-s)).toInt) += 1
          }
 	 if (debug) {
 	    for (i<-0 to ranges.length-1) {
@@ -191,7 +191,7 @@ object PE459_Scala {
     }
 
 
-   def findCount(limit:Int, tot:Long, A:Array[List[Int]], R:Array[Int], C:Array[Int]) = {
+   def findCount(limit:Int, tot:Long, A:Array[Array[Int]], R:Array[Int], C:Array[Int]) = {
 
       var nCol:Array[Long] = getRanges(A(0), R)
       var nRow:Array[Long] = getRanges(A(1), C)
